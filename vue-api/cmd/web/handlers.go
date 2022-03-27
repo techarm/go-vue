@@ -1,12 +1,12 @@
 package main
 
 import (
-	"encoding/json"
+	"errors"
 	"net/http"
 )
 
 type credentials struct {
-	UserId   string `json:"user_id"`
+	UserId   string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -15,16 +15,14 @@ type jsonResponse struct {
 	Message string `json:"message"`
 }
 
+// Login ログイン処理
 func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	var creds credentials
 
-	err := json.NewDecoder(r.Body).Decode(&creds)
+	err := app.readJSON(w, r, &creds)
 	if err != nil {
 		message := "json format is not corret"
-		writeResponse(app, w, jsonResponse{
-			Error:   true,
-			Message: message,
-		})
+		app.errorJSON(w, errors.New(message))
 		app.errorLog.Printf("%s. error: %s", message, err)
 		return
 	}
@@ -33,19 +31,12 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	app.infoLog.Println(creds.UserId, creds.Password)
 
 	// send back a response
-	writeResponse(app, w, jsonResponse{
+	err = app.writeJSON(w, http.StatusOK, jsonResponse{
 		Error:   false,
 		Message: "success",
 	})
-}
 
-func writeResponse(app *application, w http.ResponseWriter, payload jsonResponse) {
-	out, err := json.Marshal(payload)
 	if err != nil {
 		app.errorLog.Println(err)
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(out)
 }
