@@ -31,6 +31,22 @@ export default {
     methods: {
         submitHandler() {
             console.log(this.email, this.password);
+            const data = {
+                email: this.email,
+                password: this.password
+            };
+
+            fetch('http://localhost:8081/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            });
         }
     }
 }
