@@ -1,0 +1,13 @@
+<template>
+    <footer class="d-flex align-items-center justify-content-center">
+        Copyright &copy; {{new Date().getFullYear()}}
+    </footer>
+</template>
+
+<style scoped>
+    footer {
+        background: #212529;
+        color: white;
+        min-height: 3em;
+    }
+</style>
