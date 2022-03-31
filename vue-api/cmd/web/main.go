@@ -21,7 +21,7 @@ func main() {
 	var config config
 	config.port = 8081
 
-	infoLog := log.New(os.Stdout, "[INFO ] ", log.Ldate|log.Ltime)
+	infoLog := log.New(os.Stdout, "[INFO ] ", log.Ldate|log.Ltime|log.Lshortfile)
 	errorLog := log.New(os.Stdout, "[ERROR] ", log.Ldate|log.Ltime|log.Lshortfile)
 
 	var app application
