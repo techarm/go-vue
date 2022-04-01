@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/techarm/go-vue/vue-api/internal/driver"
 )
 
 type config struct {
@@ -15,6 +17,7 @@ type application struct {
 	config   config
 	infoLog  *log.Logger
 	errorLog *log.Logger
+	db       *driver.DB
 }
 
 func main() {
@@ -24,12 +27,20 @@ func main() {
 	infoLog := log.New(os.Stdout, "[INFO ] ", log.Ldate|log.Ltime|log.Lshortfile)
 	errorLog := log.New(os.Stdout, "[ERROR] ", log.Ldate|log.Ltime|log.Lshortfile)
 
+	dsn := "host=localhost port=5432 user=postgres password=password dbname=vueapi sslmode=disable timezone=UTC connect_timeout=5"
+	db, err := driver.ConnectPostgres(dsn)
+	if err != nil {
+		errorLog.Fatalln(err)
+	}
+	infoLog.Println("connect to database.")
+
 	var app application
 	app.config = config
 	app.infoLog = infoLog
 	app.errorLog = errorLog
+	app.db = db
 
-	err := app.serve()
+	err = app.serve()
 	if err != nil {
 		app.errorLog.Println(err)
 	}
