@@ -27,8 +27,7 @@ func main() {
 	infoLog := log.New(os.Stdout, "[INFO ] ", log.Ldate|log.Ltime|log.Lshortfile)
 	errorLog := log.New(os.Stdout, "[ERROR] ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	dsn := "host=localhost port=5432 user=postgres password=password dbname=vueapi sslmode=disable timezone=UTC connect_timeout=5"
-	db, err := driver.ConnectPostgres(dsn)
+	db, err := driver.ConnectPostgres(os.Getenv("DSN"))
 	if err != nil {
 		errorLog.Fatalln(err)
 	}
@@ -46,6 +45,7 @@ func main() {
 	}
 }
 
+// serve start the http web server
 func (app application) serve() error {
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", app.config.port),
