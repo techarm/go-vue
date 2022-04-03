@@ -16,7 +16,7 @@ type User struct {
 	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
-	Token     Token     `json:"token"`
+	Token     Token     `json:"token,omitempty"`
 }
 
 // GetAll is get all users from user table and order by id

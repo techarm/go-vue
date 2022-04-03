@@ -11,8 +11,9 @@ type credentials struct {
 }
 
 type jsonResponse struct {
-	Error   bool   `json:"error"`
-	Message string `json:"message"`
+	Error   bool        `json:"error"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data:omitempty"`
 }
 
 // Login ログイン処理
