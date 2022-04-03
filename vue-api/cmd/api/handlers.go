@@ -37,7 +37,7 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	user, err := app.models.User.GetByEmail(creds.UserId)
 	if err != nil {
 		app.errorLog.Println(err)
-		app.errorJSON(w, errors.New("ユーザまたはパスワードが正しくありません。"))
+		app.errorJSON(w, errors.New("ユーザまたはパスワードが正しくありません。"), http.StatusOK)
 		return
 	}
 
@@ -45,7 +45,7 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	valid, err := user.PasswordMatched(creds.Password)
 	if err != nil || !valid {
 		app.errorLog.Println(err)
-		app.errorJSON(w, errors.New("ユーザまたはパスワードが正しくありません。"))
+		app.errorJSON(w, errors.New("ユーザまたはパスワードが正しくありません。"), http.StatusOK)
 		return
 	}
 
@@ -53,7 +53,7 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	token, err := app.models.Token.GenerateToken(user.ID, 24*time.Hour)
 	if err != nil {
 		app.errorLog.Println(err)
-		app.errorJSON(w, errors.New("トークン情報が生成失敗しました。"))
+		app.errorJSON(w, errors.New("トークン情報が生成失敗しました。"), http.StatusInternalServerError)
 		return
 	}
 
@@ -63,16 +63,19 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	err = token.Insert()
 	if err != nil {
 		app.errorLog.Println(err)
-		app.errorJSON(w, errors.New("トークン情報が生成失敗しました。"))
+		app.errorJSON(w, errors.New("トークン情報が生成失敗しました。"), http.StatusInternalServerError)
 		return
 	}
 	app.infoLog.Printf("Create token info and tokenID is %d\n", token.ID)
 
 	// send back a response
+	user.Token = *token
 	err = app.writeJSON(w, http.StatusOK, jsonResponse{
 		Error:   false,
 		Message: "success",
-		Data:    warpper{"token": token},
+		Data: warpper{
+			"user": user,
+		},
 	})
 
 	if err != nil {

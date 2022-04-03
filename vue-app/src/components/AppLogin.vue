@@ -15,13 +15,16 @@
 <script>
 import TextInput from './form/TextInput.vue';
 import FormTag from './form/FormTag.vue';
+import router from './../router/index.js';
+import { store } from './store.js';
 
 export default {
     name: 'AppLogin',
     data() {
         return {
             email: "",
-            password: ""
+            password: "",
+            store
         }
     },
     components: {
@@ -43,9 +46,17 @@ export default {
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) {
+                    alert(res.message)
+                } else {
+                    // console.log(res)
+                    // console.log(res.data.token.token)
+                    store.user = res.data.user;
+                    store.token = res.data.user.token.token;
+                    router.push("/");
+                }
             });
         }
     }

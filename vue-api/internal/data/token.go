@@ -15,7 +15,7 @@ type Token struct {
 	ID        int       `json:"-"`
 	UserID    int       `json:"user_id"`
 	Email     string    `json:"email"`
-	Toekn     string    `json:"toekn"`
+	Token     string    `json:"token"`
 	TokenHash []byte    `json:"-"`
 	Expiry    time.Time `json:"expiry"`
 	CreatedAt time.Time `json:"-"`
@@ -38,7 +38,7 @@ func (t *Token) GetByToken(plainText string) (*Token, error) {
 		&token.ID,
 		&token.UserID,
 		&token.Email,
-		&token.Toekn,
+		&token.Token,
 		&token.Expiry,
 		&token.CreatedAt,
 		&token.UpdatedAt,
@@ -85,8 +85,8 @@ func (t *Token) GenerateToken(userID int, ttl time.Duration) (*Token, error) {
 		return nil, err
 	}
 
-	token.Toekn = base32.StdEncoding.WithPadding(base32.NoPadding).EncodeToString(randomBytes)
-	hash := sha256.Sum256([]byte(token.Toekn))
+	token.Token = base32.StdEncoding.WithPadding(base32.NoPadding).EncodeToString(randomBytes)
+	hash := sha256.Sum256([]byte(token.Token))
 	token.TokenHash = hash[:]
 
 	return token, nil
@@ -138,7 +138,7 @@ func (t *Token) Insert() error {
 	row := db.QueryRowContext(ctx, stmt,
 		t.UserID,
 		t.Email,
-		t.Toekn,
+		t.Token,
 		t.TokenHash,
 		t.Expiry,
 		time.Now(),
