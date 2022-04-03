@@ -122,15 +122,15 @@ func (t *Token) ValidToken(plainText string) (bool, error) {
 	return true, nil
 }
 
-// Insert inserts a new token into the database, and returns the ID
-func (t *Token) Insert() (int, error) {
+// Insert inserts a new token into the database, and set the ID in receiver
+func (t *Token) Insert() error {
 	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
 	defer cancel()
 
 	// 新しいトータルを登録する前に、DBに既存のトータル情報を全て削除
 	err := t.DeleteByUserID(t.UserID)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
 	stmt := `insert into tokens (user_id, email, token, token_hash, expiry, created_at, updated_at)
@@ -145,16 +145,15 @@ func (t *Token) Insert() (int, error) {
 		time.Now(),
 	)
 	if err := row.Err(); err != nil {
-		return 0, err
+		return err
 	}
 
-	var id int
-	err = row.Scan(&id)
+	err = row.Scan(&t.ID)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
-	return id, nil
+	return nil
 }
 
 // DeleteByUserID ユーザーIDでトータル情報を作成
@@ -162,7 +161,7 @@ func (t *Token) DeleteByUserID(userID int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
 	defer cancel()
 
-	stmt := `delete from tokens where user_id = $0`
+	stmt := `delete from tokens where user_id = $1`
 	_, err := db.ExecContext(ctx, stmt, userID)
 	return err
 }

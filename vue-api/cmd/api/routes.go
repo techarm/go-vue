@@ -59,12 +59,12 @@ func (app *application) routes() http.Handler {
 			app.errorJSON(w, err)
 			return
 		}
-		id, err := user.Insert()
+		err = user.Insert()
 		if err != nil {
 			app.errorJSON(w, err)
 			return
 		}
-		app.writeJSON(w, http.StatusOK, id)
+		app.writeJSON(w, http.StatusOK, user.ID)
 	})
 
 	mux.Put("/users/update", func(w http.ResponseWriter, r *http.Request) {

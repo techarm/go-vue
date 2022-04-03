@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -112,14 +113,14 @@ func (u *User) GetByID(id int) (*User, error) {
 	return &user, nil
 }
 
-// Insert inserts a new user into the database, and returns the ID
-func (u *User) Insert() (int, error) {
+// Insert inserts a new user into the database, and set the ID in receiver
+func (u *User) Insert() error {
 	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
 	defer cancel()
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), 12)
 	if err != nil {
-		return 0, nil
+		return nil
 	}
 
 	stmt := `insert into users (email, first_name, last_name, password, created_at, updated_at)
@@ -134,16 +135,15 @@ func (u *User) Insert() (int, error) {
 		time.Now(),
 	)
 	if err := row.Err(); err != nil {
-		return 0, err
+		return err
 	}
 
-	var id int
-	err = row.Scan(&id)
+	err = row.Scan(&u.ID)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
-	return id, nil
+	return nil
 }
 
 // Update updates the user info(expected password) by userID
@@ -176,4 +176,21 @@ func (u *User) Delete() error {
 	stmt := `delete from users where id = $1`
 	_, err := db.ExecContext(ctx, stmt, u.ID)
 	return err
+}
+
+// PasswordMatched パスワードの検証処理
+func (u *User) PasswordMatched(plainText string) (bool, error) {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(plainText))
+
+	if err != nil {
+		switch {
+		case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword):
+			// 検証失敗
+			return false, nil
+		default:
+			return false, err
+		}
+	}
+
+	return true, nil
 }
