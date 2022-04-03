@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/techarm/go-vue/vue-api/internal/data"
 	"github.com/techarm/go-vue/vue-api/internal/driver"
 )
 
@@ -17,7 +18,7 @@ type application struct {
 	config   config
 	infoLog  *log.Logger
 	errorLog *log.Logger
-	db       *driver.DB
+	models   data.Models
 }
 
 func main() {
@@ -37,7 +38,7 @@ func main() {
 	app.config = config
 	app.infoLog = infoLog
 	app.errorLog = errorLog
-	app.db = db
+	app.models = data.New(db.SQL)
 
 	err = app.serve()
 	if err != nil {
