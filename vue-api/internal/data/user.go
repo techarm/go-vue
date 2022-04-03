@@ -3,6 +3,8 @@ package data
 import (
 	"context"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 // User is user model
@@ -115,6 +117,11 @@ func (u *User) Insert() (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
 	defer cancel()
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), 12)
+	if err != nil {
+		return 0, nil
+	}
+
 	stmt := `insert into users (email, first_name, last_name, password, created_at, updated_at)
 		     values ($1, $2, $3, $4, $5, $6) returning id`
 
@@ -122,7 +129,7 @@ func (u *User) Insert() (int, error) {
 		u.Email,
 		u.FirstName,
 		u.LastName,
-		u.Password,
+		hashedPassword,
 		time.Now(),
 		time.Now(),
 	)
@@ -131,7 +138,7 @@ func (u *User) Insert() (int, error) {
 	}
 
 	var id int
-	err := row.Scan(&id)
+	err = row.Scan(&id)
 	if err != nil {
 		return 0, err
 	}
@@ -144,7 +151,12 @@ func (u *User) Update() error {
 	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
 	defer cancel()
 
-	stmt := `update users set(email, first_name, last_name, updated_at) values ($1, $2, $3, $4) where id = $5`
+	stmt := `update users set
+		     email = $1,
+			 first_name = $2,
+			 last_name = $3,
+			 updated_at = $4
+			 where id = $5`
 	_, err := db.ExecContext(ctx, stmt,
 		u.Email,
 		u.FirstName,
