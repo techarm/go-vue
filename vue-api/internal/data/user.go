@@ -10,13 +10,13 @@ import (
 
 // User is user model
 type User struct {
-	ID        int       `json:"id"`
+	ID        int       `json:"-"`
 	Email     string    `json:"email"`
 	FirstName string    `json:"first_Name,omitempty"`
 	LastName  string    `json:"last_name,omitempty"`
 	Password  string    `json:"password"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
 	Token     Token     `json:"token,omitempty"`
 }
 

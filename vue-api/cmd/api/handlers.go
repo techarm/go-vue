@@ -31,8 +31,7 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO authenticate
-	app.infoLog.Println(creds.UserId, creds.Password)
+	app.infoLog.Printf("user[%s] was try to login", creds.UserId)
 
 	// ユーザーID(email)でユーザー情報を取得する
 	user, err := app.models.User.GetByEmail(creds.UserId)

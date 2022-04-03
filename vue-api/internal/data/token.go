@@ -12,14 +12,14 @@ import (
 )
 
 type Token struct {
-	ID        int       `json:"id"`
+	ID        int       `json:"-"`
 	UserID    int       `json:"user_id"`
 	Email     string    `json:"email"`
 	Toekn     string    `json:"toekn"`
 	TokenHash []byte    `json:"-"`
 	Expiry    time.Time `json:"expiry"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
 }
 
 // GetByToken トークン文字列でTokenデータを取得
