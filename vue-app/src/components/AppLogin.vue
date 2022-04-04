@@ -51,10 +51,23 @@ export default {
                 if (res.error) {
                     alert(res.message)
                 } else {
-                    // console.log(res)
-                    // console.log(res.data.token.token)
-                    store.user = res.data.user;
+                    // save data to store
                     store.token = res.data.user.token.token;
+                    store.user = {
+                        id: res.data.user.id,
+                        first_name: res.data.user.first_name,
+                        last_name: res.data.user.last_name,
+                        email: res.data.user.email
+                    };
+
+                    // save store data to cookie
+                    let date = new Date();
+                    let expDays = 1;
+                    date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+                    const expires = "expires=" + date.toUTCString();
+                    document.cookie = `_site_data=${JSON.stringify(res.data)}; Expires=${expires}; Path=/; SameSites=struct; Secure;`;
+
+                    // redirect to index page
                     router.push("/");
                 }
             });

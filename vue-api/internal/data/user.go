@@ -10,7 +10,7 @@ import (
 
 // User is user model
 type User struct {
-	ID        int       `json:"-"`
+	ID        int       `json:"id"`
 	Email     string    `json:"email"`
 	FirstName string    `json:"first_Name,omitempty"`
 	LastName  string    `json:"last_name,omitempty"`
