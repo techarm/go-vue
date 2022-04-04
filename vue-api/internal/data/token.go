@@ -165,3 +165,13 @@ func (t *Token) DeleteByUserID(userID int) error {
 	_, err := db.ExecContext(ctx, stmt, userID)
 	return err
 }
+
+// DeleteByToken トークン文字列でトータル情報を作成
+func (t *Token) DeleteByToken(token string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
+	defer cancel()
+
+	stmt := `delete from tokens where token = $1`
+	_, err := db.ExecContext(ctx, stmt, token)
+	return err
+}

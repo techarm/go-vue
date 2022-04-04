@@ -82,3 +82,33 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 		app.errorLog.Println(err)
 	}
 }
+
+// Logout ログアウト処理、トークン情報を削除する
+func (app *application) Logout(w http.ResponseWriter, r *http.Request) {
+	var request struct {
+		Token string `json:"token"`
+	}
+
+	err := app.readJSON(w, r, &request)
+	if err != nil {
+		message := "json format is not corret"
+		app.errorLog.Printf("%s. error: %s", message, err)
+		app.errorJSON(w, errors.New(message))
+		return
+	}
+
+	// 処理失敗しても、正常の応答データを返す
+	err = app.models.Token.DeleteByToken(request.Token)
+	if err != nil {
+		app.errorLog.Println(err)
+	}
+
+	err = app.writeJSON(w, http.StatusOK, jsonResponse{
+		Error:   false,
+		Message: "success",
+	})
+
+	if err != nil {
+		app.errorLog.Println(err)
+	}
+}

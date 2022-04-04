@@ -1,4 +1,4 @@
-DSN="host=localhost port=5432 user=postgres password=password dbname=vueapi sslmode=disable timezone=UTC connect_timeout=5"
+DSN="host=192.168.0.200 port=5432 user=postgres password=password dbname=vueapi sslmode=disable timezone=UTC connect_timeout=5"
 BINARY_NAME=vueapi
 BINARY_FILE_PATH=./dist/${BINARY_NAME}
 

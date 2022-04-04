@@ -21,12 +21,36 @@
 </template>
 
 <script>
-import {store} from './store.js'
+import {store} from './store.js';
+import router from './../router/index.js';
+
 export default {
     name: 'AppHeader',
     data() {
         return {
             store
+        }
+    },
+    methods: {
+        logout() {
+            const payload = {
+                token: store.token
+            };
+
+            fetch("http://localhost:8081/users/logout", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                store.token = "";
+                store.user = {};
+                router.push("/login")
+            })
         }
     }
 }
