@@ -39,7 +39,7 @@ export default {
                 password: this.password
             };
 
-            fetch('http://localhost:8081/users/login', {
+            fetch(process.env.VUE_APP_API_URL + '/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -40,7 +40,7 @@ export default {
             const payload = {
                 token: store.token
             };
-            fetch("http://localhost:8081/users/logout", {
+            fetch(process.env.VUE_APP_API_URL + "/users/logout", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
