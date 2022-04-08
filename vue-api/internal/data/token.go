@@ -39,6 +39,7 @@ func (t *Token) GetByToken(plainText string) (*Token, error) {
 		&token.UserID,
 		&token.Email,
 		&token.Token,
+		&token.TokenHash,
 		&token.Expiry,
 		&token.CreatedAt,
 		&token.UpdatedAt,
@@ -56,7 +57,7 @@ func (t *Token) GetUserByToken(plainText string) (*User, error) {
 	// get token info from database
 	tkn, err := t.GetByToken(plainText)
 	if err != nil {
-		return nil, errors.New("cannot found token from database")
+		return nil, err
 	}
 
 	if tkn.Expiry.Before(time.Now()) {
@@ -66,7 +67,7 @@ func (t *Token) GetUserByToken(plainText string) (*User, error) {
 	var user User
 	userData, err := user.GetByID(tkn.UserID)
 	if err != nil {
-		return nil, errors.New("cannot found user info by token")
+		return nil, err
 	}
 
 	return userData, nil

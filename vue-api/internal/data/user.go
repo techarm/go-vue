@@ -90,7 +90,7 @@ func (u *User) GetByID(id int) (*User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
 	defer cancel()
 
-	stmt := `select id, email, first_name, last_name, password, created_at, updated_at from users where email = $1`
+	stmt := `select id, email, first_name, last_name, password, created_at, updated_at from users where id = $1`
 	row := db.QueryRowContext(ctx, stmt, id)
 	if err := row.Err(); err != nil {
 		return nil, err
