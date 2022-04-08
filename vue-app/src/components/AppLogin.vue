@@ -17,6 +17,7 @@ import TextInput from './form/TextInput.vue';
 import FormTag from './form/FormTag.vue';
 import router from './../router/index.js';
 import { store } from './store.js';
+import requests from './request.js';
 
 export default {
     name: 'AppLogin',
@@ -39,15 +40,7 @@ export default {
                 password: this.password
             };
 
-            fetch(process.env.VUE_APP_API_URL + '/users/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(res => res.json())
-            .then(res => {
+            requests.post('/users/login', data).then(res => {
                 if (res.error) {
                     alert(res.message)
                 } else {

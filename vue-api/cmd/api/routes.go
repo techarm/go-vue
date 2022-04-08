@@ -27,14 +27,7 @@ func (app *application) routes() http.Handler {
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthoTokenMiddleware)
 
-		r.Get("/users/all", func(w http.ResponseWriter, r *http.Request) {
-			users, err := app.models.User.GetAll()
-			if err != nil {
-				app.errorJSON(w, err)
-				return
-			}
-			app.writeJSON(w, http.StatusOK, users)
-		})
+		r.Get("/users", app.GetUsers)
 	})
 
 	mux.Get("/users/id", func(w http.ResponseWriter, r *http.Request) {

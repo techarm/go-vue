@@ -35,7 +35,7 @@ export default {
       let cookieData = JSON.parse(data);
       
       // restore data to store
-      store.token = cookieData.user.token;
+      store.token = cookieData.user.token.token;
       store.user = {
         id: cookieData.user.id,
         first_name: cookieData.user.first_name,

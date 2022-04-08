@@ -112,3 +112,24 @@ func (app *application) Logout(w http.ResponseWriter, r *http.Request) {
 		app.errorLog.Println(err)
 	}
 }
+
+// GetUsers ユーザー一覧を取得する
+func (app *application) GetUsers(w http.ResponseWriter, r *http.Request) {
+	users, err := app.models.User.GetAll()
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	err = app.writeJSON(w, http.StatusOK, jsonResponse{
+		Error:   false,
+		Message: "success",
+		Data: warpper{
+			"users": users,
+		},
+	})
+
+	if err != nil {
+		app.errorLog.Println(err)
+	}
+}

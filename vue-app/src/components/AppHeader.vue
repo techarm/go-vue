@@ -27,6 +27,7 @@
 <script>
 import {store} from './store.js';
 import router from './../router/index.js';
+import request from './request.js';
 
 export default {
     name: 'AppHeader',
@@ -40,15 +41,7 @@ export default {
             const payload = {
                 token: store.token
             };
-            fetch(process.env.VUE_APP_API_URL + "/users/logout", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.json())
-            .then(res => {
+            request.post("/users/logout", payload).then(res => {
                 console.log(res);
                 store.token = "";
                 store.user = {};
