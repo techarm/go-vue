@@ -3,6 +3,7 @@ import AppBody from '../components/AppBody.vue';
 import AppLogin from '../components/AppLogin.vue';
 import UserList from '../components/user/UserList.vue';
 import UserEdit from '../components/user/UserEdit.vue';
+import security from '@/components/security';
 
 const routes = [
     {
@@ -28,4 +29,9 @@ const routes = [
 ];
 
 const router = createRouter({history: createWebHistory(), routes});
+
+router.beforeEach(async () => {
+    const canAccess = await security.checkToken();
+    if (!canAccess) return '/login';
+})
 export default router;

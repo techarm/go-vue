@@ -135,13 +135,7 @@ func (app *application) ValidateToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	valid, err := app.models.Token.ValidToken(payload.Token)
-	if err != nil {
-		app.errorLog.Println(err)
-		app.errorJSON(w, errors.New("トークン検証できませんでした。"))
-		return
-	}
-
+	valid, _ := app.models.Token.ValidToken(payload.Token)
 	app.writeJSON(w, http.StatusOK, jsonResponse{
 		Error:   false,
 		Message: "success",
