@@ -10,26 +10,14 @@ let security = {
         return true;
     },
 
-    getOptions: function() {
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Authorization", "Bearer " + store.token);
-        console.log(JSON.stringify(store));
-
-        return {
-            method: "GET",
-            headers: headers
-        }
-    },
-
-    postOptions: function(payload) {
+    requestOptions: function(method, payload) {
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
         headers.append("Authorization", "Bearer " + store.token);
 
         return {
-            method: "POST",
-            body: JSON.stringify(payload),
+            method: method,
+            body: payload ? JSON.stringify(payload) : null,
             headers: headers
         }
     }

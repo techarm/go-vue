@@ -36,7 +36,7 @@
                                 <span class="badge bg-danger">未ログイン</span>
                             </td>
                             <td>
-                                <button class="btn btn-primary btn-sm">編集</button>
+                                <router-link class="btn btn-primary btn-sm" :to="`/admin/users/${user.id}`">編集</router-link>
                             </td>
                         </tr>
                     </tbody>

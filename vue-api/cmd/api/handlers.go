@@ -220,7 +220,7 @@ func (app *application) CreateUser(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// UpdateUser ユーザー作成する
+// UpdateUser ユーザー更新する
 func (app *application) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -264,6 +264,7 @@ func (app *application) UpdateUser(w http.ResponseWriter, r *http.Request) {
 			app.errorJSON(w, errors.New("パスワード更新失敗しました。"), http.StatusInternalServerError)
 			return
 		}
+		app.infoLog.Printf("ユーザーパスワード変更しました。 userID=%d\n", user.ID)
 	}
 
 	app.writeJSON(w, http.StatusOK, jsonResponse{
