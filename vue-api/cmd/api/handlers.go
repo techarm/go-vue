@@ -321,6 +321,13 @@ func (app *application) LogUserOutAndSetInactive(w http.ResponseWriter, r *http.
 		return
 	}
 
+	// 対象ユーザーのログイントークンを削除
+	err = app.models.Token.DeleteByUserID(userID)
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("トークン削除処理が失敗しました。"), http.StatusInternalServerError)
+	}
+
 	app.writeJSON(w, http.StatusOK, jsonResponse{
 		Error:   false,
 		Message: "対象ユーザーを無効にし、ログアウトさせました。",

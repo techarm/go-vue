@@ -10,9 +10,22 @@
                     <li class="nav-item">
                         <router-link class="nav-link active" aria-current="page" to="/">Home</router-link>
                     </li>
+                    <li v-if="store.token !== ''">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            管理
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <router-link class="dropdown-item" to="/admin/users">ユーザー一覧</router-link>
+                            </li>
+                            <li>
+                                <router-link class="dropdown-item" :to="{name: 'UserEdit', params: {userId : 0}}">ユーザー登録</router-link>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item ">
-                        <router-link v-if="store.token === ''" class="nav-link" to="/login">Login</router-link>
-                        <a href="javascript:void(0);" v-else class="nav-link" @click="logout">Logout</a>
+                        <router-link v-if="store.token === ''" class="nav-link" to="/login">ログイン</router-link>
+                        <a href="javascript:void(0);" v-else class="nav-link" @click="logout">ログアウト</a>
                     </li>
                 </ul>
                 <span class="navbar-text">
