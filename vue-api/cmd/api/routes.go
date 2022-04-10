@@ -6,7 +6,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/techarm/go-vue/vue-api/internal/data"
 )
 
 func (app *application) routes() http.Handler {
@@ -23,69 +22,18 @@ func (app *application) routes() http.Handler {
 
 	mux.Post("/users/login", app.Login)
 	mux.Post("/users/logout", app.Logout)
+	mux.Post("/validate-token", app.ValidateToken)
 
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthoTokenMiddleware)
 
 		r.Get("/users", app.GetUsers)
-	})
+		r.Get("/users/{id}", app.GetUser)
+		r.Post("/users", app.CreateUser)
+		r.Put("/users/{id}", app.UpdateUser)
+		r.Delete("/users/{id}", app.DeleteUser)
 
-	mux.Get("/users/id", func(w http.ResponseWriter, r *http.Request) {
-		user, err := app.models.User.GetByID(1)
-		if err != nil {
-			app.errorJSON(w, err)
-			return
-		}
-		app.writeJSON(w, http.StatusOK, user)
-	})
-
-	mux.Post("/users/email", func(w http.ResponseWriter, r *http.Request) {
-		var user data.User
-		err := app.readJSON(w, r, &user)
-		if err != nil {
-			app.errorJSON(w, err)
-			return
-		}
-		app.models.User.GetByEmail(user.Email)
-	})
-
-	mux.Post("/users/insert", func(w http.ResponseWriter, r *http.Request) {
-		var user data.User
-		err := app.readJSON(w, r, &user)
-		if err != nil {
-			app.errorJSON(w, err)
-			return
-		}
-		err = user.Insert()
-		if err != nil {
-			app.errorJSON(w, err)
-			return
-		}
-		app.writeJSON(w, http.StatusOK, user.ID)
-	})
-
-	mux.Put("/users/update", func(w http.ResponseWriter, r *http.Request) {
-		var user data.User
-		err := app.readJSON(w, r, &user)
-		if err != nil {
-			app.errorJSON(w, err)
-			return
-		}
-		err = user.Update()
-		if err != nil {
-			app.errorJSON(w, err)
-			return
-		}
-	})
-
-	mux.Delete("/users/delete", func(w http.ResponseWriter, r *http.Request) {
-		var user data.User
-		err := app.readJSON(w, r, &user)
-		if err != nil {
-			app.errorJSON(w, err)
-			return
-		}
-		user.Delete()
+		r.Post("/log-user-out/{id}", app.LogUserOutAndSetInactive)
 	})
 
 	return mux

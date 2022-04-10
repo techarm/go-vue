@@ -12,14 +12,14 @@ import (
 )
 
 type Token struct {
-	ID        int       `json:"-"`
-	UserID    int       `json:"user_id"`
-	Email     string    `json:"email"`
-	Token     string    `json:"token"`
-	TokenHash []byte    `json:"-"`
-	Expiry    time.Time `json:"expiry"`
-	CreatedAt time.Time `json:"-"`
-	UpdatedAt time.Time `json:"-"`
+	ID        int        `json:"-"`
+	UserID    int        `json:"user_id,omitempty"`
+	Email     string     `json:"email,omitempty"`
+	Token     string     `json:"token,omitempty"`
+	TokenHash []byte     `json:"-"`
+	Expiry    *time.Time `json:"expiry,omitempty"`
+	CreatedAt time.Time  `json:"-"`
+	UpdatedAt time.Time  `json:"-"`
 }
 
 // GetByToken トークン文字列でTokenデータを取得
@@ -75,9 +75,10 @@ func (t *Token) GetUserByToken(plainText string) (*User, error) {
 
 // GenerateToken ユーザーIDで26桁のトークン情報を生成
 func (t *Token) GenerateToken(userID int, ttl time.Duration) (*Token, error) {
+	expiryTime := time.Now().Add(ttl)
 	token := &Token{
 		UserID: userID,
-		Expiry: time.Now().Add(ttl),
+		Expiry: &expiryTime,
 	}
 
 	randomBytes := make([]byte, 16)
