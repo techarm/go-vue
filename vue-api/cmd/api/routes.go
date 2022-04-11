@@ -24,6 +24,8 @@ func (app *application) routes() http.Handler {
 	mux.Post("/users/logout", app.Logout)
 	mux.Post("/validate-token", app.ValidateToken)
 
+	mux.Get("/books", app.GetAllBooks)
+
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthoTokenMiddleware)
 

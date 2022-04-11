@@ -293,6 +293,7 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// LogUserOutAndSetInactive 対象ユーザーをログアウトさせ、状態を無効にする
 func (app *application) LogUserOutAndSetInactive(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -326,5 +327,23 @@ func (app *application) LogUserOutAndSetInactive(w http.ResponseWriter, r *http.
 	app.writeJSON(w, http.StatusOK, jsonResponse{
 		Error:   false,
 		Message: "対象ユーザーを無効にし、ログアウトさせました。",
+	})
+}
+
+// GetAllBooks 全部の本リストを取得
+func (app *application) GetAllBooks(w http.ResponseWriter, r *http.Request) {
+	books, err := app.models.Book.GetAll()
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("book not found"), http.StatusInternalServerError)
+		return
+	}
+
+	app.writeJSON(w, http.StatusOK, jsonResponse{
+		Error:   false,
+		Message: "success",
+		Data: warpper{
+			"books": books,
+		},
 	})
 }
