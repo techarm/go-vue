@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AppBody from '../components/AppBody.vue';
 import AppLogin from '../components/AppLogin.vue';
+import BookList from '../components/book/BookList.vue';
 import UserList from '../components/user/UserList.vue';
 import UserEdit from '../components/user/UserEdit.vue';
 import security from '@/components/security';
@@ -10,6 +11,11 @@ const routes = [
         path: '/',
         name: 'Home',
         component: AppBody
+    },
+    {
+        path: '/books',
+        name: 'BookList',
+        component: BookList
     },
     {
         path: '/login',

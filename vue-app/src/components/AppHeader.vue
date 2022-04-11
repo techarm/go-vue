@@ -10,6 +10,9 @@
                     <li class="nav-item">
                         <router-link class="nav-link active" aria-current="page" to="/">Home</router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link active" to="/books">本</router-link>
+                    </li>
                     <li v-if="store.token !== ''">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             管理
