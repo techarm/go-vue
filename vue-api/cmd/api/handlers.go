@@ -335,7 +335,7 @@ func (app *application) GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	books, err := app.models.Book.GetAll()
 	if err != nil {
 		app.errorLog.Println(err)
-		app.errorJSON(w, errors.New("book not found"), http.StatusInternalServerError)
+		app.errorJSON(w, errors.New("books not found"), http.StatusInternalServerError)
 		return
 	}
 
@@ -344,6 +344,25 @@ func (app *application) GetAllBooks(w http.ResponseWriter, r *http.Request) {
 		Message: "success",
 		Data: warpper{
 			"books": books,
+		},
+	})
+}
+
+// GetBook slugで本情報を取得
+func (app *application) GetBook(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+	book, err := app.models.Book.GetOneBySlug(slug)
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("book not found"), http.StatusInternalServerError)
+		return
+	}
+
+	app.writeJSON(w, http.StatusOK, jsonResponse{
+		Error:   false,
+		Message: "success",
+		Data: warpper{
+			"book": book,
 		},
 	})
 }

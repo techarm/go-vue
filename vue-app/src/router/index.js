@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import AppBody from '../components/AppBody.vue';
 import AppLogin from '../components/AppLogin.vue';
 import BookList from '../components/book/BookList.vue';
+import BookDetail from '../components/book/BookDetail.vue';
 import UserList from '../components/user/UserList.vue';
 import UserEdit from '../components/user/UserEdit.vue';
 import security from '@/components/security';
@@ -16,6 +17,11 @@ const routes = [
         path: '/books',
         name: 'BookList',
         component: BookList
+    },
+    {
+        path: '/books/:bookName',
+        name: 'BookDetail',
+        component: BookDetail
     },
     {
         path: '/login',

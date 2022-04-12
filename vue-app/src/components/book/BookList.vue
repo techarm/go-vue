@@ -22,7 +22,9 @@
                        <div v-for="book in books" :key="book.id">
                             <div class="card me-2 ms-1 mb-3" style="width: 13rem;"
                                 v-if="book.genre_ids.includes(currentFilter) || currentFilter === 0">
-                                <img class="card-img-top" :src="`${this.imgPath}/${book.slug}.jpg`" :alt="book.name"/>
+                                <router-link :to="`/books/${book.slug}`">
+                                    <img class="card-img-top" :src="`${this.imgPath}/${book.slug}.jpg`" :alt="book.name"/>
+                                </router-link>
                                 <div class="card-body text-center">
                                     <h5 class="card-title">{{book.title}}</h5>
                                     <p class="card-text">{{book.author.author_name}}</p>

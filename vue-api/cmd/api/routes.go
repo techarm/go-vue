@@ -25,6 +25,7 @@ func (app *application) routes() http.Handler {
 	mux.Post("/validate-token", app.ValidateToken)
 
 	mux.Get("/books", app.GetAllBooks)
+	mux.Get("/books/{slug}", app.GetBook)
 
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthoTokenMiddleware)
