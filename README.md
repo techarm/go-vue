@@ -11,5 +11,11 @@ npm start serve
 ## サーバー起動 
 ```
 cd vue-api
-go run cmd/web/main.go
+make start
+```
+
+## サーバー停止
+```
+cd vue-api
+make stop
 ```
