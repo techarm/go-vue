@@ -5,6 +5,17 @@
                 <h1 class="mt-3">本一覧</h1>                
             </div>
             <hr>
+            <div class="text-center mb-3">
+                <span class="filter" v-bind:class="{active: currentFilter === 0}" v-on:click="setFilter(0)">All</span>
+                <span class="filter" v-bind:class="{active: currentFilter === 1}" v-on:click="setFilter(1)">Science Fiction</span>
+                <span class="filter" v-bind:class="{active: currentFilter === 2}" v-on:click="setFilter(2)">Fanstasy</span>
+                <span class="filter" v-bind:class="{active: currentFilter === 3}" v-on:click="setFilter(3)">Romance</span>
+                <span class="filter" v-bind:class="{active: currentFilter === 4}" v-on:click="setFilter(4)">Thriller</span>
+                <span class="filter" v-bind:class="{active: currentFilter === 5}" v-on:click="setFilter(5)">Mastery</span>
+                <span class="filter" v-bind:class="{active: currentFilter === 6}" v-on:click="setFilter(6)">Horror</span>
+                <span class="filter" v-bind:class="{active: currentFilter === 7}" v-on:click="setFilter(7)">Classic</span>
+            </div>
+            <hr>
             <div class="col">
                 <div class="card-group">
                    <div class="p-3 d-flex flex-warp">
@@ -15,6 +26,12 @@
                                 <div class="card-body text-center">
                                     <h5 class="card-title">{{book.title}}</h5>
                                     <p class="card-text">{{book.author.author_name}}</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <small class="text-muted" v-for="(g, index) in book.genres" :key="g.id">
+                                        <em class="em-1">{{g.genre_name}}</em>
+                                        <template v-if="index !== (book.genres.length - 1)">, </template>
+                                    </small>
                                 </div>
                             </div>
                        </div>
@@ -52,6 +69,32 @@ export default {
             console.log(e);
             this.$emit('error', "データ取得失敗しました。");
         })
+    },
+    methods: {
+        setFilter(filter) {
+            this.currentFilter = filter;
+        }
     }
 }
 </script>
+
+<style scoped>
+.filter {
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.35s;
+    border: 1px solid silver;
+    margin-right: 5px;
+    line-height: 2.5rem;
+}
+
+.filter.active {
+    background: lightgreen;
+}
+
+.filter:hover {
+    background: lightgray;
+}
+
+</style>
