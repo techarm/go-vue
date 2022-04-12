@@ -18,7 +18,7 @@
             <hr>
             <div class="col">
                 <div class="card-group">
-                   <div class="p-3 d-flex flex-warp">
+                   <transition-group class="p-3 d-flex flex-warp" tag="div" appear name="books">
                        <div v-for="book in books" :key="book.id">
                             <div class="card me-2 ms-1 mb-3" style="width: 13rem;"
                                 v-if="book.genre_ids.includes(currentFilter) || currentFilter === 0">
@@ -35,7 +35,7 @@
                                 </div>
                             </div>
                        </div>
-                   </div>
+                   </transition-group>
                 </div>
             </div>
         </div>
@@ -95,6 +95,20 @@ export default {
 
 .filter:hover {
     background: lightgray;
+}
+
+/* transition styles */
+.books-move {
+    transition: all 0.5s ease-in-out 50ms;
+}
+
+.books-enter-active, .books-leave-active {
+    transition: all 1.5s ease;
+}
+
+.books-enter-from, .books-leave-to {
+    transform: translateX(-80px);
+    opacity: 0;
 }
 
 </style>
