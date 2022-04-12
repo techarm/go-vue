@@ -1,7 +1,11 @@
 <template>
   <AppHeader />
   <div>
-    <router-view :key="componentKey" @success="success" @error="error" @warning="warning" @forceUpdate="forceUpdate" />
+    <router-view v-slot="{Component}" :key="componentKey" @success="success" @error="error" @warning="warning" @forceUpdate="forceUpdate">
+      <keep-alive include="book-list">
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </div>
   <AppFooter />
 </template>
@@ -11,6 +15,7 @@ import AppHeader from './components/AppHeader.vue';
 import AppFooter from './components/AppFooter.vue';
 import { store } from './components/store.js';
 import notie from 'notie';
+import BookList from './components/book/BookList.vue';
 
 const getCookie = (name) => {
   return document.cookie.split("; ").reduce((r, v) => {
@@ -23,7 +28,8 @@ export default {
   name: 'App',
   components: {
     AppHeader,
-    AppFooter
+    AppFooter,
+    BookList
   },
   data() {
     return {

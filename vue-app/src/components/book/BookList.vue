@@ -49,6 +49,7 @@ import {store} from '@/components/store.js';
 import requests from '@/components/request.js';
 
 export default {
+    name: "book-list",
     data() {
         return {
             store,
