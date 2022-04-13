@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row justify-content-md-center my-3">
+        <div v-if="ready" class="row justify-content-md-center my-3">
             <div class="col-md-2">
                 <img class="img-fluid img-thumbnail" :src="`${imgPath}/${book.slug}.jpg`" alt="book cover">
             </div>
@@ -12,10 +12,12 @@
                 <p>{{book.description}}</p>
             </div>
         </div>
+        <div v-else class="row">Loading...</div>
     </div>
 </template>
 <script>
-import requests from '../request'
+import requests from '@/components/request.js';
+
 export default {
     data() {
         return {

@@ -53,7 +53,7 @@ export default {
     data() {
         return {
             store,
-            books: {},
+            books: [],
             imgPath: process.env.VUE_APP_IMAGE_URL + "/covers",
             currentFilter: 0,
             ready: false,

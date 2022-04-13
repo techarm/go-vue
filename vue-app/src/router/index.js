@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import AppBody from '../components/AppBody.vue';
-import AppLogin from '../components/AppLogin.vue';
-import BookList from '../components/book/BookList.vue';
-import BookDetail from '../components/book/BookDetail.vue';
-import UserList from '../components/user/UserList.vue';
-import UserEdit from '../components/user/UserEdit.vue';
+import AppBody from '@/components/AppBody.vue';
+import AppLogin from '@/components/AppLogin.vue';
+import BookList from '@/components/book/BookList.vue';
+import BookDetail from '@/components/book/BookDetail.vue';
+import UserList from '@/components/admin/user/UserList.vue';
+import UserEdit from '@/components/admin/user/UserEdit.vue';
+import AdminBookList from '@/components/admin/book/AdminBookList.vue';
 import security from '@/components/security';
 
 const routes = [
@@ -37,6 +38,11 @@ const routes = [
         path: "/admin/users/:userId",
         name: 'UserEdit',
         component: UserEdit
+    },
+    {
+        path: "/admin/books",
+        name: "AdminBookList",
+        component: AdminBookList
     }
 ];
 

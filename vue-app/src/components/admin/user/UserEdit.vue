@@ -84,12 +84,12 @@
 </template>
 
 <script>
-import FormTag from '../form/FormTag.vue';
-import TextInput from '../form/TextInput.vue';
-import security from '../security.js';
-import requests from '../request.js';
-import { store } from '../store.js';
-import router from '../../router/index.js';
+import FormTag from '@/components/form/FormTag.vue';
+import TextInput from '@/components/form/TextInput.vue';
+import security from '@/components/security.js';
+import requests from '@/components/request.js';
+import { store } from '@/components/store.js';
+import router from '@/router/index.js';
 import notie from 'notie';
 
 export default {

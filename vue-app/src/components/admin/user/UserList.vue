@@ -49,9 +49,9 @@
 </template>
 
 <script>
-import security from '../security.js';
-import requests from '../request.js';
-import { store } from '../store.js';
+import security from '@/components/security.js';
+import requests from '@/components/request.js';
+import { store } from '@/components/store.js';
 import notie from 'notie';
 
 export default {

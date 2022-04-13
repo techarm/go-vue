@@ -19,6 +19,9 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
+                                <router-link class="dropdown-item" to="/admin/books">本一覧</router-link>
+                            </li>   
+                            <li>
                                 <router-link class="dropdown-item" to="/admin/users">ユーザー一覧</router-link>
                             </li>
                             <li>
