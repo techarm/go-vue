@@ -366,3 +366,39 @@ func (app *application) GetBook(w http.ResponseWriter, r *http.Request) {
 		},
 	})
 }
+
+// GetAllGenres 全部のジャンルを取得
+func (app *application) GetAllGenres(w http.ResponseWriter, r *http.Request) {
+	geners, err := app.models.Genre.All()
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("genre data not found"), http.StatusInternalServerError)
+		return
+	}
+
+	app.writeJSON(w, http.StatusOK, jsonResponse{
+		Error:   false,
+		Message: "success",
+		Data: warpper{
+			"genres": geners,
+		},
+	})
+}
+
+// GetAllAuthors 全部の作者を取得
+func (app *application) GetAllAuthors(w http.ResponseWriter, r *http.Request) {
+	authors, err := app.models.Author.All()
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("author data not found"), http.StatusInternalServerError)
+		return
+	}
+
+	app.writeJSON(w, http.StatusOK, jsonResponse{
+		Error:   false,
+		Message: "success",
+		Data: warpper{
+			"authors": authors,
+		},
+	})
+}

@@ -24,4 +24,5 @@ type Models struct {
 	Token  Token
 	Book   Book
 	Author Author
+	Genre  Genre
 }

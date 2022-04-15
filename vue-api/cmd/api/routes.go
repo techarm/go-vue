@@ -35,8 +35,10 @@ func (app *application) routes() http.Handler {
 		r.Post("/users", app.CreateUser)
 		r.Put("/users/{id}", app.UpdateUser)
 		r.Delete("/users/{id}", app.DeleteUser)
-
 		r.Post("/log-user-out/{id}", app.LogUserOutAndSetInactive)
+
+		r.Get("/authors", app.GetAllAuthors)
+		r.Get("/genres", app.GetAllGenres)
 	})
 
 	fileServerHandler := http.FileServer(http.Dir("./static/"))

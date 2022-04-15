@@ -379,7 +379,7 @@ func (a *Author) All() ([]*Author, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
 	defer cancel()
 
-	query := `select id, author_name, created_at, updated_at  from authors order by author_name`
+	query := `select id, author_name, created_at, updated_at from authors order by author_name`
 	rows, err := db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
@@ -396,4 +396,28 @@ func (a *Author) All() ([]*Author, error) {
 		authors = append(authors, &author)
 	}
 	return authors, nil
+}
+
+// All returns a list of all genre
+func (a *Genre) All() ([]*Genre, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
+	defer cancel()
+
+	query := `select id, genre_name, created_at, updated_at from genres`
+	rows, err := db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var genres []*Genre
+
+	for rows.Next() {
+		var genre Genre
+		err := rows.Scan(&genre.ID, &genre.GenreName, &genre.CreatedAt, &genre.UpdatedAt)
+		if err != nil {
+			return nil, err
+		}
+		genres = append(genres, &genre)
+	}
+	return genres, nil
 }
