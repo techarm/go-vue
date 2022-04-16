@@ -6,6 +6,7 @@ import BookDetail from '@/components/book/BookDetail.vue';
 import UserList from '@/components/admin/user/UserList.vue';
 import UserEdit from '@/components/admin/user/UserEdit.vue';
 import AdminBookList from '@/components/admin/book/AdminBookList.vue';
+import AdminBookEdit from '@/components/admin/book/AdminBookEdit.vue';
 import security from '@/components/security';
 
 const routes = [
@@ -43,6 +44,11 @@ const routes = [
         path: "/admin/books",
         name: "AdminBookList",
         component: AdminBookList
+    },
+    {
+        path: "/admin/books/:bookId",
+        name: "AdminBookEdit",
+        component: AdminBookEdit
     }
 ];
 

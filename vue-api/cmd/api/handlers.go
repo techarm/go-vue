@@ -335,7 +335,7 @@ func (app *application) GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	books, err := app.models.Book.GetAll()
 	if err != nil {
 		app.errorLog.Println(err)
-		app.errorJSON(w, errors.New("books not found"), http.StatusInternalServerError)
+		app.errorJSON(w, errors.New("対象データが存在しません"), http.StatusNotFound)
 		return
 	}
 
@@ -354,7 +354,32 @@ func (app *application) GetBook(w http.ResponseWriter, r *http.Request) {
 	book, err := app.models.Book.GetOneBySlug(slug)
 	if err != nil {
 		app.errorLog.Println(err)
-		app.errorJSON(w, errors.New("book not found"), http.StatusInternalServerError)
+		app.errorJSON(w, errors.New("対象データが存在しません"), http.StatusNotFound)
+		return
+	}
+
+	app.writeJSON(w, http.StatusOK, jsonResponse{
+		Error:   false,
+		Message: "success",
+		Data: warpper{
+			"book": book,
+		},
+	})
+}
+
+// GetBookByID bookIDで本情報を取得
+func (app *application) GetBookByID(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("パラメータ不正です"), http.StatusBadRequest)
+		return
+	}
+
+	book, err := app.models.Book.GetOneById(id)
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("対象データが存在しません"), http.StatusNotFound)
 		return
 	}
 
@@ -372,7 +397,7 @@ func (app *application) GetAllGenres(w http.ResponseWriter, r *http.Request) {
 	geners, err := app.models.Genre.All()
 	if err != nil {
 		app.errorLog.Println(err)
-		app.errorJSON(w, errors.New("genre data not found"), http.StatusInternalServerError)
+		app.errorJSON(w, errors.New("対象データが存在しません"), http.StatusNotFound)
 		return
 	}
 
@@ -390,7 +415,7 @@ func (app *application) GetAllAuthors(w http.ResponseWriter, r *http.Request) {
 	authors, err := app.models.Author.All()
 	if err != nil {
 		app.errorLog.Println(err)
-		app.errorJSON(w, errors.New("author data not found"), http.StatusInternalServerError)
+		app.errorJSON(w, errors.New("対象データが存在しません"), http.StatusNotFound)
 		return
 	}
 

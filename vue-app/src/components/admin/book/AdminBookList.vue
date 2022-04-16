@@ -19,7 +19,7 @@
                             <td>{{book.title}}</td>
                             <td>{{book.author.author_name}}</td>
                             <td>
-                                <router-link class="btn btn-primary btn-sm" :to="`/admin/book/${book.id}`">編集</router-link>
+                                <router-link class="btn btn-primary btn-sm" :to="`/admin/books/${book.id}`">編集</router-link>
                             </td>
                         </tr>
                     </tbody>

@@ -37,6 +37,7 @@ func (app *application) routes() http.Handler {
 		r.Delete("/users/{id}", app.DeleteUser)
 		r.Post("/log-user-out/{id}", app.LogUserOutAndSetInactive)
 
+		r.Get("/books/{id}", app.GetBookByID)
 		r.Get("/authors", app.GetAllAuthors)
 		r.Get("/genres", app.GetAllGenres)
 	})
