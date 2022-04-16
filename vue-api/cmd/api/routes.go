@@ -40,6 +40,7 @@ func (app *application) routes() http.Handler {
 		r.Get("/books/{id}", app.GetBookByID)
 		r.Post("/books", app.SaveBook)
 		r.Put("/books/{id}", app.SaveBook)
+		r.Delete("/books/{id}", app.DeleteBook)
 
 		r.Get("/authors", app.GetAllAuthors)
 		r.Get("/genres", app.GetAllGenres)

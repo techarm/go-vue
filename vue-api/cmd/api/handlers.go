@@ -511,3 +511,39 @@ func (app *application) SaveBook(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 }
+
+// DeleteBook 書籍削除処理
+func (app *application) DeleteBook(w http.ResponseWriter, r *http.Request) {
+	bookID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("パラメータ不正です"))
+		return
+	}
+
+	book, err := app.models.Book.GetOneById(bookID)
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("対象データが存在しません"), http.StatusNotFound)
+		return
+	}
+
+	err = book.Delete()
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("書籍削除失敗しました。"), http.StatusInternalServerError)
+		return
+	}
+
+	// カバー画像ファイルが存在する場合は、ファイルを削除する
+	coverFilePath := fmt.Sprintf("%s/covers/%s.jpg", staticPath, book.Slug)
+	if _, err := os.Stat(coverFilePath); err == nil {
+		err := os.Remove(coverFilePath)
+		app.infoLog.Printf("書籍のカバー画像ファイルを削除しました, name=%s, result=%v", book.Slug, err)
+	}
+
+	app.writeJSON(w, http.StatusOK, jsonResponse{
+		Error:   false,
+		Message: "書籍を削除しました。",
+	})
+}

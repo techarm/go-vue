@@ -361,13 +361,13 @@ func (b *Book) Update() error {
 	return nil
 }
 
-// DeleteByID deletes a book by id
-func (b *Book) DeleteByID(id int) error {
+// Delete deletes a book by id
+func (b *Book) Delete() error {
 	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
 	defer cancel()
 
 	stmt := `delete from books where id = $1`
-	_, err := db.ExecContext(ctx, stmt, id)
+	_, err := db.ExecContext(ctx, stmt, b.ID)
 	if err != nil {
 		return err
 	}

@@ -89,6 +89,7 @@ import FormTag from '@/components/form/FormTag.vue';
 import TextInput from '@/components/form/TextInput.vue';
 import SelectInput from '@/components/form/SelectInput.vue';
 import router from '@/router/index.js';
+import notie from 'notie';
 
 export default {
     name: "AdminBookEdit",
@@ -195,6 +196,22 @@ export default {
             }
             reader.readAsDataURL(file);
         },
+        confirmDelete(id) {
+            notie.confirm({
+                text: "書籍情報を削除しましたが、よろしいですか？",
+                submitText: "削除",
+                submitCallback: () => {
+                    requests.delete(`/admin/books/${id}`).then((res) => {
+                        if (res.error) {
+                            this.$emit('error', res.message);
+                        } else {
+                            this.$emit('success', res.message);
+                            router.push("/admin/books");
+                        }
+                    })
+                }
+            })
+        }
     }
 }
 </script>
