@@ -88,11 +88,13 @@ import requests from '@/components/request.js';
 import FormTag from '@/components/form/FormTag.vue';
 import TextInput from '@/components/form/TextInput.vue';
 import SelectInput from '@/components/form/SelectInput.vue';
+import router from '@/router/index.js';
 
 export default {
     name: "AdminBookEdit",
     data() {
         return {
+            editMode: false,
             book: {
                 id: 0,
                 title: "",
@@ -151,8 +153,48 @@ export default {
                         this.book.genres_ids = genreArray;
                     }
                 })
+                this.editMode = true;
             }
         }
+    },
+    methods: {
+        submitHandler() {
+            const payload = {
+                id: this.book.id,
+                title: this.book.title,
+                author_id : parseInt(this.book.author_id, 10),
+                publication_year: parseInt(this.book.publication_year, 10),
+                description: this.book.description,
+                cover: this.book.cover,
+                slug: this.book.slug,
+                genre_ids: this.book.genre_ids,
+            }
+            
+            let response;
+            if (this.editMode) {
+                response = requests.put(`/admin/books/${payload.id}`, payload);
+            } else {
+                response = requests.post("/admin/books", payload);
+            }
+            
+            response.then(res => {
+                if (res.error) {
+                    this.$emit('error', res.message);
+                } else {
+                    this.$emit('success', res.message);
+                    router.push('/admin/books');
+                }
+            })
+        },
+        loadCoverImage() {
+            const file = this.$refs.coverInput.files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result;
+                this.book.cover = base64String;
+            }
+            reader.readAsDataURL(file);
+        },
     }
 }
 </script>

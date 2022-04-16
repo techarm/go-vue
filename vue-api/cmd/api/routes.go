@@ -38,6 +38,9 @@ func (app *application) routes() http.Handler {
 		r.Post("/log-user-out/{id}", app.LogUserOutAndSetInactive)
 
 		r.Get("/books/{id}", app.GetBookByID)
+		r.Post("/books", app.SaveBook)
+		r.Put("/books/{id}", app.SaveBook)
+
 		r.Get("/authors", app.GetAllAuthors)
 		r.Get("/genres", app.GetAllGenres)
 	})

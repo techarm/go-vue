@@ -1,14 +1,21 @@
 package main
 
 import (
+	"encoding/base64"
 	"errors"
+	"fmt"
 	"net/http"
+	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/mozillazg/go-slugify"
 	"github.com/techarm/go-vue/vue-api/internal/data"
 )
+
+var staticPath = "./static/"
 
 type credentials struct {
 	UserId   string `json:"email"`
@@ -426,4 +433,81 @@ func (app *application) GetAllAuthors(w http.ResponseWriter, r *http.Request) {
 			"authors": authors,
 		},
 	})
+}
+
+// SaveBook 書籍情報登録または更新処理
+func (app *application) SaveBook(w http.ResponseWriter, r *http.Request) {
+	var payload struct {
+		ID              int    `json:"id"`
+		Title           string `json:"title"`
+		AuthorID        int    `json:"author_id"`
+		PublicationYear int    `json:"publication_year"`
+		Description     string `json:"description"`
+		CoverBase64     string `json:"cover"`
+		GenreIDs        []int  `json:"genre_ids"`
+	}
+	err := app.readJSON(w, r, &payload)
+	if err != nil {
+		app.errorLog.Println(err)
+		app.errorJSON(w, errors.New("パラメータ不正"))
+		return
+	}
+
+	book := data.Book{
+		ID:              payload.ID,
+		Title:           payload.Title,
+		AuthorID:        payload.AuthorID,
+		PublicationYear: payload.PublicationYear,
+		Description:     payload.Description,
+		Slug:            slugify.Slugify(payload.Title),
+		GenreIDs:        payload.GenreIDs,
+	}
+
+	if len(payload.CoverBase64) > 0 {
+		converData := strings.Split(payload.CoverBase64, ",")
+		if len((converData)) != 2 {
+			app.errorLog.Println("画像ファイルデータフォーマット不正")
+			app.errorJSON(w, errors.New("パラメータ不正"))
+			return
+		}
+		decoded, err := base64.StdEncoding.DecodeString(converData[1])
+		if err != nil {
+			app.errorLog.Println(err)
+			app.errorJSON(w, errors.New("パラメータ不正"))
+			return
+		}
+		app.infoLog.Println("content type: ", http.DetectContentType(decoded))
+		if err := os.WriteFile(fmt.Sprintf("%s/covers/%s.jpg", staticPath, book.Slug), decoded, 06666); err != nil {
+			app.errorLog.Println(err)
+			app.errorJSON(w, errors.New("書籍情報登録失敗しました。"), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	if book.ID == 0 {
+		id, err := book.Insert()
+		if err != nil {
+			app.errorLog.Println(err)
+			app.errorJSON(w, errors.New("書籍情報登録失敗しました。"), http.StatusInternalServerError)
+			return
+		}
+		app.infoLog.Printf("新しい書籍情報を登録しました。ID=%d\n", id)
+		app.writeJSON(w, http.StatusOK, jsonResponse{
+			Error:   false,
+			Message: "書籍情報を登録しました。",
+		})
+
+	} else {
+		err := book.Update()
+		if err != nil {
+			app.errorLog.Println(err)
+			app.errorJSON(w, errors.New("書籍情報更新失敗しました。"), http.StatusInternalServerError)
+			return
+		}
+		app.infoLog.Printf("新しい書籍情報を更新しました。ID=%d\n", book.ID)
+		app.writeJSON(w, http.StatusOK, jsonResponse{
+			Error:   false,
+			Message: "書籍情報を更新しました。",
+		})
+	}
 }

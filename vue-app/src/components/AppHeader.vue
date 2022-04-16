@@ -1,17 +1,14 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <router-link class="navbar-brand" to="/">Techarm Book Store</router-link>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <router-link class="nav-link active" aria-current="page" to="/">Home</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link active" to="/books">本</router-link>
+                        <router-link class="nav-link" to="/books">書籍</router-link>
                     </li>
                     <li v-if="store.token !== ''">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -19,8 +16,11 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <router-link class="dropdown-item" to="/admin/books">本一覧</router-link>
-                            </li>   
+                                <router-link class="dropdown-item" to="/admin/books">書籍一覧</router-link>
+                            </li> 
+                            <li>
+                                <router-link class="dropdown-item" to="/admin/books/0">書籍登録</router-link>
+                            </li>  
                             <li>
                                 <router-link class="dropdown-item" to="/admin/users">ユーザー一覧</router-link>
                             </li>

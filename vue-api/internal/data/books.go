@@ -270,7 +270,7 @@ func (b *Book) genresForBook(id int) ([]Genre, []int, error) {
 }
 
 // Insert saves one book to the database
-func (b *Book) Insert(book Book) (int, error) {
+func (b *Book) Insert() (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), DB_TIME_OUT)
 	defer cancel()
 
@@ -279,11 +279,11 @@ func (b *Book) Insert(book Book) (int, error) {
 
 	var newID int
 	err := db.QueryRowContext(ctx, stmt,
-		book.Title,
-		book.AuthorID,
-		book.PublicationYear,
-		slugify.Slugify(book.Title),
-		book.Description,
+		b.Title,
+		b.AuthorID,
+		b.PublicationYear,
+		slugify.Slugify(b.Title),
+		b.Description,
 		time.Now(),
 		time.Now(),
 	).Scan(&newID)
@@ -292,15 +292,15 @@ func (b *Book) Insert(book Book) (int, error) {
 	}
 
 	// update genres using genre ids
-	if len(book.GenreIDs) > 0 {
+	if len(b.GenreIDs) > 0 {
 		stmt = `delete from books_genres where book_id = $1`
-		_, err := db.ExecContext(ctx, stmt, book.ID)
+		_, err := db.ExecContext(ctx, stmt, b.ID)
 		if err != nil {
 			return newID, fmt.Errorf("book updated, but genres not: %s", err.Error())
 		}
 
 		// add new genres
-		for _, x := range book.GenreIDs {
+		for _, x := range b.GenreIDs {
 			stmt = `insert into books_genres (book_id, genre_id, created_at, updated_at)
 				values ($1, $2, $3, $4)`
 			_, err = db.ExecContext(ctx, stmt, newID, x, time.Now(), time.Now())
