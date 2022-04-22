@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AppBody from '@/components/AppBody.vue';
-import AppLogin from '@/components/AppLogin.vue';
+import AppLogin from '@/components/AdminLogin.vue';
 import BookList from '@/components/book/BookList.vue';
 import BookDetail from '@/components/book/BookDetail.vue';
+import DashBoard from '@/components/admin/DashBoard.vue';
 import UserList from '@/components/admin/user/UserList.vue';
 import UserEdit from '@/components/admin/user/UserEdit.vue';
 import AdminBookList from '@/components/admin/book/AdminBookList.vue';
@@ -29,6 +30,11 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: AppLogin
+    },
+    {
+        path: "/admin",
+        name: 'DashBoard',
+        component: DashBoard
     },
     {
         path: "/admin/users",
