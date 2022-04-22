@@ -1,46 +1,46 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <router-link class="navbar-brand" to="/">Techarm Book Store</router-link>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/books">書籍</router-link>
-                    </li>
-                    <li v-if="store.token !== ''">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            管理
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <router-link class="dropdown-item" to="/admin/books">書籍一覧</router-link>
-                            </li> 
-                            <li>
-                                <router-link class="dropdown-item" to="/admin/books/0">書籍登録</router-link>
-                            </li>  
-                            <li>
-                                <router-link class="dropdown-item" to="/admin/users">ユーザー一覧</router-link>
-                            </li>
-                            <li>
-                                <router-link class="dropdown-item" :to="{name: 'UserEdit', params: {userId : 0}}">ユーザー登録</router-link>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item ">
-                        <router-link v-if="store.token === ''" class="nav-link" to="/login">ログイン</router-link>
-                        <a href="javascript:void(0);" v-else class="nav-link" @click="logout">ログアウト</a>
-                    </li>
-                </ul>
-                <span class="navbar-text">
-                   {{ store.user.first_name ?? '' }}
-                   {{ store.user.last_name ?? '' }}
-                </span>
+    <!-- Navbar -->
+    <div class="container position-sticky z-index-sticky top-0">
+        <div class="row">
+            <div class="col-12">
+                <!-- Navbar -->
+                <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+                    <div class="container-fluid ps-2 pe-0">
+                        <router-link class="navbar-brand font-weight-bolder ms-lg-0 ms-3" to="/">Techarm Book Store</router-link>
+                        <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon mt-2">
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navigation">
+                            <ul class="navbar-nav mx-auto">
+                                <li class="nav-item">
+                                    <router-link class="nav-link d-flex align-items-center me-2 active" aria-current="page" to="/books">
+                                        <i class="fa fa-book opacity-6 text-dark me-1"></i>書籍一覧
+                                    </router-link>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="../pages/dashboard.html">
+                                        <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>管理
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav d-lg-block d-none">
+                                <li class="nav-item">
+                                    <router-link v-if="store.token === ''" class="nav-link me-2" to="/login">
+                                        <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>ログイン
+                                    </router-link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <!-- End Navbar -->
             </div>
         </div>
-    </nav>
+    </div>
 </template>
 
 <script>
