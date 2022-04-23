@@ -1,17 +1,19 @@
 <template>
-    <div class="row mb-3">
-        <label :for="name" class="col-sm-4 col-form-label">{{label}}</label>
-        <div class="col-sm-8">
-            <select 
-                class="form-select"
-                :id="name"
-                :name="name"
-                :required="required"
-                :multiple="multiple"
-                :value="modelValue"
-                @input="$emit('update:modelValue', $event.target.value)">
-                <option v-for="option in items" :value="option.value" :key="option.value">{{option.text}}</option>
-            </select>
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="input-group input-group-static">
+                <label :for="name" class="ms-0">{{label}}</label>
+                <select 
+                    class="form-control"
+                    :id="name"
+                    :name="name"
+                    :required="required"
+                    :multiple="multiple"
+                    :value="modelValue"
+                    @input="$emit('update:modelValue', $event.target.value)">
+                    <option v-for="option in items" :value="option.value" :key="option.value">{{option.text}}</option>
+                </select>
+            </div>
         </div>
     </div>
 </template>

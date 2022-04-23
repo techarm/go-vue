@@ -11,7 +11,7 @@
         <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <router-link class="nav-link text-white active bg-gradient-primary" to="/admin">
+                    <router-link class="nav-link text-white" :class="{'active bg-gradient-primary' : selectedMenu === 'dashboard'}" to="/admin">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">dashboard</i>
                         </div>
@@ -22,7 +22,7 @@
                     <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">書籍管理</h6>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link text-white" to="/admin/books/0">
+                    <router-link class="nav-link text-white" :class="{'active bg-gradient-primary' : selectedMenu === 'bookAdd'}" to="/admin/books/0">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">bookmark_add</i>
                         </div>
@@ -30,7 +30,7 @@
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link text-white" to="/admin/books">
+                    <router-link class="nav-link text-white" :class="{'active bg-gradient-primary' : selectedMenu === 'bookList'}" to="/admin/books">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">library_books</i>
                         </div>
@@ -41,7 +41,7 @@
                     <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">ユーザー管理</h6>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link text-white" to="/admin/users/0">
+                    <router-link class="nav-link text-white" :class="{'active bg-gradient-primary' : selectedMenu === 'userAdd'}" to="/admin/users/0">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">person_add</i>
                         </div>
@@ -49,7 +49,7 @@
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link text-white" to="/admin/users">
+                    <router-link class="nav-link text-white" :class="{'active bg-gradient-primary' : selectedMenu === 'userList'}" to="/admin/users">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">people</i>
                         </div>
@@ -63,6 +63,9 @@
 
 <script>
 export default {
-    name: "SiderMenu"
+    name: "SiderMenu",
+    props: {
+        "selectedMenu": String
+    }
 }
 </script>

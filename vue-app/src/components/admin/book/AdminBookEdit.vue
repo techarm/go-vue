@@ -1,85 +1,107 @@
 <template>
-    <div class="container">
-        <div class="row p-3">
-            <div class="col">
-                <h1 class="mt-3">本編集</h1>
-                <hr>
-
-                <form-tag @bookEditEvent="submitHandler" name="bookForm" event="bookEditEvent">
-
-                    <div v-if="this.book.slug !== ''" class="mb-3">
-                        <img :src="`${this.imgPath}/covers/${this.book.slug}.jpg`" class="img-fluid img-thumbnail book-cover" alt="cover">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">カバー画像</label>
-                        <input v-if="this.book.id === 0" ref="coverInput" class="form-control" type="file" id="formFile"
-                            required accept="image/jpeg" @change="loadCoverImage">
-                        <input v-else ref="coverInput" class="form-control" type="file" id="formFile"
-                            accept="image/jpeg" @change="loadCoverImage">
-                    </div>
-
-                    <text-input
-                        v-model="book.title"
-                        type="text"
-                        required="true"
-                        label="タイトル"
-                        :value="book.title"
-                        name="title"></text-input>
-
-                    <select-input
-                        name="author-id"
-                        v-model="this.book.author_id"
-                        :items="this.authors"
-                        required="required"
-                        label="作者"></select-input>
-
-                    <text-input
-                        v-model="book.publication_year"
-                        type="number"
-                        required="true"
-                        label="発売日"
-                        :value="book.publication_year"
-                        name="publication-year"></text-input>
-
-                    <div class="mb-3">
-                        <label for="description" class="form-label">説明</label>
-                        <textarea required v-model="book.description" class="form-control" id="description" rows="3"></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="genres" class="form-label">ジャンル</label>
-                        <select ref="genres"
-                            id="genres"
-                            class="form-select"
-                            required
-                            size="7"
-                            v-model="this.book.genre_ids"
-                            multiple>
-                            <option v-for="g in this.genres" :value="g.value" :key="g.value">
-                                {{g.text}}
-                            </option>
-                        </select>
-                    </div>
-
-                    <hr>
-
-                    <div class="float-start">
-                        <input type="submit" class="btn btn-primary me-2" value="保存" />
-                        <router-link to="/admin/books" class="btn btn-outline-secondary">キャンセル</router-link>
-                    </div>
-                    <div class="float-end">
-                        <a v-if="this.book.id > 0"
-                            class="btn btn-danger" href="javascript:void(0);" @click="confirmDelete(this.book.id)">
-                            削除
-                        </a>
-                    </div>
-                    <div class="clearfix"></div>
-
-                </form-tag>
+    <side-menu selectedMenu="bookAdd" />
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+        <!-- Navbar -->
+        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+            <div class="container-fluid py-1 px-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">書籍管理</a></li>
+                        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">書籍登録</li>
+                    </ol>
+                </nav>
             </div>
+        </nav>
+        <!-- End Navbar -->
+        <div class="container-fluid pt-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card my-4">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                                <h6 class="text-white text-capitalize ps-3">書籍登録</h6>
+                            </div>
+                        </div>
+                        <div class="card-body pb-2">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <form-tag @bookEditEvent="submitHandler" name="bookForm" event="bookEditEvent">
+                                        <div v-if="this.book.slug !== ''" class="mb-3">
+                                            <img :src="`${this.imgPath}/covers/${this.book.slug}.jpg`" class="img-fluid img-thumbnail book-cover" alt="cover">
+                                        </div>
+
+                                        <div class="mb-5 form-group form-file-upload form-file-multiple">
+                                            <label for="formFile" class="ms-0">カバー画像</label><br>
+                                            <input v-if="this.book.id === 0" ref="coverInput" type="file" id="formFile"
+                                                required accept="image/jpeg" @change="loadCoverImage">
+                                            <input v-else ref="coverInput" type="file" id="formFile"
+                                                accept="image/jpeg" @change="loadCoverImage">
+                                        </div>
+
+                                        <text-input
+                                            v-model="book.title"
+                                            type="text"
+                                            required="true"
+                                            label="タイトル"
+                                            :value="book.title"
+                                            name="title"></text-input>
+
+                                        <select-input
+                                            name="author-id"
+                                            v-model="this.book.author_id"
+                                            :items="this.authors"
+                                            required="required"
+                                            label="作者"></select-input>
+
+                                        <text-input
+                                            v-model="book.publication_year"
+                                            type="number"
+                                            required="true"
+                                            label="発売日"
+                                            :value="book.publication_year"
+                                            name="publication-year"></text-input>
+
+                                        <div class="input-group input-group-static mb-4">
+                                            <label for="description">説明</label>
+                                            <textarea required v-model="book.description" class="form-control" id="description" rows="3"
+                                                placeholder="書籍の説明内容を入力してください。"></textarea>
+                                        </div>
+
+                                        <div class="input-group input-group-static mb-4">
+                                            <label for="genres">ジャンル</label>
+                                            <select ref="genres"
+                                                id="genres"
+                                                class="form-control"
+                                                required
+                                                size="7"
+                                                v-model="this.book.genre_ids"
+                                                multiple>
+                                                <option v-for="g in this.genres" :value="g.value" :key="g.value">
+                                                    {{g.text}}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="float-start">
+                                            <input type="submit" class="btn btn-success me-2" value="保存" />
+                                            <router-link to="/admin/books" class="btn btn-outline-secondary">キャンセル</router-link>
+                                        </div>
+                                        <div class="float-end">
+                                            <a v-if="this.book.id > 0"
+                                                class="btn btn-danger" href="javascript:void(0);" @click="confirmDelete(this.book.id)">
+                                                削除
+                                            </a>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form-tag>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
         </div>
-    </div>
+    </main>
 </template>
 
 <script>
@@ -88,6 +110,7 @@ import requests from '@/components/request.js';
 import FormTag from '@/components/form/FormTag.vue';
 import TextInput from '@/components/form/TextInput.vue';
 import SelectInput from '@/components/form/SelectInput.vue';
+import SiderMenu from '@/components/admin/SiderMenu.vue';
 import router from '@/router/index.js';
 import notie from 'notie';
 
@@ -115,7 +138,8 @@ export default {
     components: {
         'form-tag': FormTag,
         'text-input': TextInput,
-        'select-input': SelectInput
+        'select-input': SelectInput,
+         "side-menu": SiderMenu
     },
     beforeMount() {
         if (security.requireToken()) {
