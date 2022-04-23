@@ -6,8 +6,7 @@
         :event="event" 
         @submit.prevent="submit"
         autocomplete="off"
-        class="needs-validation w-50"
-        novalidate>
+        class="needs-validation">
         <slot></slot>
     </form>
 </template>

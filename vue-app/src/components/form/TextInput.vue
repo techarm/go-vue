@@ -1,20 +1,22 @@
 <template>
     <div class="row mb-3">
-        <label :for="name" class="col-sm-4 col-form-label">{{label}}</label>
-        <div class="col-sm-8">
-            <input
-                :type="type"
-                :name="name"
-                :label="label"
-                :placeholder="placeholder"
-                :required="required"
-                :min="min"
-                :max="max"
-                :value="modelValue"
-                :autocomplete="name + '-new'"
-                @input="$emit('update:modelValue', $event.target.value)"
-                class="form-control">
-            <p class="form-text">{{help}}</p>
+        <div class="col-12">
+            <div class="input-group input-group-static mb-4">
+                <label :for="name">{{label}}</label>
+                <input
+                    :type="type"
+                    :name="name"
+                    :label="label"
+                    :placeholder="placeholder"
+                    :required="required"
+                    :min="min"
+                    :max="max"
+                    :value="modelValue"
+                    :autocomplete="name + '-new'"
+                    @input="$emit('update:modelValue', $event.target.value)"
+                    class="form-control">
+                <p class="form-text">{{help}}</p>
+            </div>
         </div>
     </div>
 </template>
