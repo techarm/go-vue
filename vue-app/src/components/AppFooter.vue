@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row align-items-center justify-content-center">
                 <div class="col-12">
-                    <div class="copyright text-center text-sm text-white">
+                    <div class="copyright text-center text-sm">
                         Copyright &copy; {{new Date().getFullYear()}},
                         Created by <a href="https://techarm.github.com" class="font-weight-bold text-white" target="_blank">Techarm</a>
                     </div>

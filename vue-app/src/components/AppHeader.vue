@@ -17,14 +17,9 @@
                         <div class="collapse navbar-collapse" id="navigation">
                             <ul class="navbar-nav mx-auto">
                                 <li class="nav-item">
-                                    <router-link class="nav-link d-flex align-items-center me-2 active" aria-current="page" to="/books">
-                                        <i class="fa fa-book opacity-6 text-dark me-1"></i>書籍一覧
-                                    </router-link>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="../pages/dashboard.html">
+                                    <router-link class="nav-link d-flex align-items-center me-2" v-if="store.token !== ''" to="/admin">
                                         <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>管理
-                                    </a>
+                                    </router-link>
                                 </li>
                             </ul>
                             <ul class="navbar-nav d-lg-block d-none">
@@ -32,6 +27,9 @@
                                     <router-link v-if="store.token === ''" class="nav-link me-2" to="/login">
                                         <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>ログイン
                                     </router-link>
+                                    <a href="javascript:void(0);" v-else class="nav-link me-2" @click="logout">
+                                        <i class="fas fa-user-slash opacity-6 text-dark me-1"></i>ログアウト
+                                    </a>
                                 </li>
                             </ul>
                         </div>

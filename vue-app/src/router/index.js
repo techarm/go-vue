@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import AppBody from '@/components/AppBody.vue';
 import AppLogin from '@/components/AdminLogin.vue';
 import BookList from '@/components/book/BookList.vue';
 import BookDetail from '@/components/book/BookDetail.vue';
@@ -14,11 +13,6 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: AppBody
-    },
-    {
-        path: '/books',
-        name: 'BookList',
         component: BookList
     },
     {
