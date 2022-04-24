@@ -9,11 +9,8 @@
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue';
-import AppFooter from './components/AppFooter.vue';
 import { store } from './components/store.js';
 import notie from 'notie';
-import BookList from './components/book/BookList.vue';
 
 const getCookie = (name) => {
   return document.cookie.split("; ").reduce((r, v) => {
@@ -24,11 +21,6 @@ const getCookie = (name) => {
 
 export default {
   name: 'App',
-  components: {
-    AppHeader,
-    AppFooter,
-    BookList
-  },
   data() {
     return {
       store,

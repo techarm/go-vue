@@ -42,9 +42,9 @@
 </template>
 
 <script>
-import {store, clearStoreAndCookie} from './store.js';
-import router from './../router/index.js';
-import request from './request.js';
+import {store, clearStoreAndCookie} from '@/components/store.js';
+import router from '@/router/index.js';
+import request from '@/components/request.js';
 
 export default {
     name: 'AppHeader',
@@ -60,9 +60,6 @@ export default {
             };
             request.post("/users/logout", payload).then(res => {
                 console.log(res);
-                // store.token = "";
-                // store.user = {};
-                // document.cookie = "_site_data=; Path=/; SameSite=Strict; Secure; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
                 clearStoreAndCookie();
                 router.push("/login")
             });

@@ -12,7 +12,7 @@ import security from '@/components/security';
 const routes = [
     {
         path: '/',
-        name: 'Home',
+        name: 'BookList',
         component: BookList
     },
     {

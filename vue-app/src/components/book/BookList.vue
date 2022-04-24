@@ -1,45 +1,7 @@
 <template>
     <div class="bg-gray-200">
         <!-- Navbar -->
-        <div class="container position-sticky z-index-sticky top-0">
-            <div class="row">
-                <div class="col-12">
-                    <!-- Navbar -->
-                    <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-                        <div class="container-fluid ps-2 pe-0">
-                            <router-link class="navbar-brand font-weight-bolder ms-lg-0 ms-3" to="/">Techarm Book Store</router-link>
-                            <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon mt-2">
-                                    <span class="navbar-toggler-bar bar1"></span>
-                                    <span class="navbar-toggler-bar bar2"></span>
-                                    <span class="navbar-toggler-bar bar3"></span>
-                                </span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navigation">
-                                <ul class="navbar-nav mx-auto">
-                                    <li class="nav-item">
-                                        <router-link class="nav-link d-flex align-items-center me-2" v-if="store.token !== ''" to="/admin">
-                                            <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>管理
-                                        </router-link>
-                                    </li>
-                                </ul>
-                                <ul class="navbar-nav d-lg-block d-none">
-                                    <li class="nav-item">
-                                        <router-link v-if="store.token === ''" class="nav-link me-2" to="/login">
-                                            <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>ログイン
-                                        </router-link>
-                                        <a href="javascript:void(0);" v-else class="nav-link me-2" @click="logout">
-                                            <i class="fas fa-user-slash opacity-6 text-dark me-1"></i>ログアウト
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                    <!-- End Navbar -->
-                </div>
-            </div>
-        </div>
+        <app-header />
         <main class="main-content mt-0">
             <section>
                 <div class="page-header align-items-start min-vh-100">
@@ -85,7 +47,7 @@
                             </div>
                         </div>
                     </div>
-                    <AppFooter />
+                    <app-footer />
                 </div>
             </section>
         </main>
@@ -93,10 +55,10 @@
 </template>
 
 <script>
-import {store, clearStoreAndCookie} from '@/components/store.js';
+import {store} from '@/components/store.js';
 import requests from '@/components/request.js';
-import AppFooter from '../AppFooter.vue';
-import router from '@/router/index.js';
+import AppFooter from '@/components/AppFooter.vue';
+import AppHeader from '@/components/AppHeader.vue';
 
 export default {
     name: "BookList",
@@ -110,7 +72,8 @@ export default {
         }
     },
     components: {
-        AppFooter,
+        'app-header': AppHeader,
+        'app-footer': AppFooter,
     },
     emits: ['error'],
     beforeMount() {
@@ -129,19 +92,6 @@ export default {
     methods: {
         setFilter(filter) {
             this.currentFilter = filter;
-        },
-        logout() {
-            const payload = {
-                token: store.token
-            };
-            requests.post("/users/logout", payload).then(res => {
-                console.log(res);
-                // store.token = "";
-                // store.user = {};
-                // document.cookie = "_site_data=; Path=/; SameSite=Strict; Secure; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-                clearStoreAndCookie();
-                router.push("/login")
-            });
         }
     }
 }
