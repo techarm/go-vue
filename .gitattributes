@@ -1,1 +1,1 @@
-vue-app/public/* linguist-vendored
+vue-app/public/** linguist-vendored=true
